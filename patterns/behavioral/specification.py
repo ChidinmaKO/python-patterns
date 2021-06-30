@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 @author: Gordeev Andrey <gordeev.and.and@gmail.com>
 
@@ -49,7 +47,10 @@ class AndSpecification(CompositeSpecification):
         self._other = other
 
     def is_satisfied_by(self, candidate):
-        return bool(self._one.is_satisfied_by(candidate) and self._other.is_satisfied_by(candidate))
+        return bool(
+            self._one.is_satisfied_by(candidate)
+            and self._other.is_satisfied_by(candidate)
+        )
 
 
 class OrSpecification(CompositeSpecification):
@@ -61,7 +62,10 @@ class OrSpecification(CompositeSpecification):
         self._other = other
 
     def is_satisfied_by(self, candidate):
-        return bool(self._one.is_satisfied_by(candidate) or self._other.is_satisfied_by(candidate))
+        return bool(
+            self._one.is_satisfied_by(candidate)
+            or self._other.is_satisfied_by(candidate)
+        )
 
 
 class NotSpecification(CompositeSpecification):
@@ -86,29 +90,28 @@ class UserSpecification(CompositeSpecification):
 
 class SuperUserSpecification(CompositeSpecification):
     def is_satisfied_by(self, candidate):
-        return getattr(candidate, 'super_user', False)
+        return getattr(candidate, "super_user", False)
 
 
 def main():
-    print('Specification')
-    andrey = User()
-    ivan = User(super_user=True)
-    vasiliy = 'not User instance'
+    """
+    >>> andrey = User()
+    >>> ivan = User(super_user=True)
+    >>> vasiliy = 'not User instance'
 
-    root_specification = UserSpecification().and_specification(SuperUserSpecification())
+    >>> root_specification = UserSpecification().and_specification(SuperUserSpecification())
 
-    print(root_specification.is_satisfied_by(andrey))
-    print(root_specification.is_satisfied_by(ivan))
-    print(root_specification.is_satisfied_by(vasiliy))
+    # Is specification satisfied by <name>
+    >>> root_specification.is_satisfied_by(andrey), 'andrey'
+    (False, 'andrey')
+    >>> root_specification.is_satisfied_by(ivan), 'ivan'
+    (True, 'ivan')
+    >>> root_specification.is_satisfied_by(vasiliy), 'vasiliy'
+    (False, 'vasiliy')
+    """
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    import doctest
 
-
-OUTPUT = """
-Specification
-False
-True
-False
-"""
+    doctest.testmod()

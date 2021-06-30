@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 *What is this pattern about?
 The Decorator pattern is used to dynamically add a new feature to an
@@ -44,7 +42,7 @@ class BoldWrapper(TextTag):
         self._wrapped = wrapped
 
     def render(self):
-        return "<b>{}</b>".format(self._wrapped.render())
+        return f"<b>{self._wrapped.render()}</b>"
 
 
 class ItalicWrapper(TextTag):
@@ -54,15 +52,23 @@ class ItalicWrapper(TextTag):
         self._wrapped = wrapped
 
     def render(self):
-        return "<i>{}</i>".format(self._wrapped.render())
+        return f"<i>{self._wrapped.render()}</i>"
 
 
-if __name__ == '__main__':
-    simple_hello = TextTag("hello, world!")
-    special_hello = ItalicWrapper(BoldWrapper(simple_hello))
-    print("before:", simple_hello.render())
-    print("after:", special_hello.render())
+def main():
+    """
+    >>> simple_hello = TextTag("hello, world!")
+    >>> special_hello = ItalicWrapper(BoldWrapper(simple_hello))
 
-### OUTPUT ###
-# before: hello, world!
-# after: <i><b>hello, world!</b></i>
+    >>> print("before:", simple_hello.render())
+    before: hello, world!
+
+    >>> print("after:", special_hello.render())
+    after: <i><b>hello, world!</b></i>
+    """
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()

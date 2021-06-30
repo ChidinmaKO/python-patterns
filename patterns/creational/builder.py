@@ -1,6 +1,3 @@
-#!/usr/bin/python
-# -*- coding : utf-8 -*-
-
 """
 *What is this pattern about?
 It decouples the creation of a complex object and its representation,
@@ -48,24 +45,24 @@ class Building:
         raise NotImplementedError
 
     def __repr__(self):
-        return 'Floor: {0.floor} | Size: {0.size}'.format(self)
+        return "Floor: {0.floor} | Size: {0.size}".format(self)
 
 
 # Concrete Buildings
 class House(Building):
     def build_floor(self):
-        self.floor = 'One'
+        self.floor = "One"
 
     def build_size(self):
-        self.size = 'Big'
+        self.size = "Big"
 
 
 class Flat(Building):
     def build_floor(self):
-        self.floor = 'More than One'
+        self.floor = "More than One"
 
     def build_size(self):
-        self.size = 'Small'
+        self.size = "Small"
 
 
 # In some very complex cases, it might be desirable to pull out the building
@@ -76,15 +73,15 @@ class Flat(Building):
 
 class ComplexBuilding:
     def __repr__(self):
-        return 'Floor: {0.floor} | Size: {0.size}'.format(self)
+        return "Floor: {0.floor} | Size: {0.size}".format(self)
 
 
 class ComplexHouse(ComplexBuilding):
     def build_floor(self):
-        self.floor = 'One'
+        self.floor = "One"
 
     def build_size(self):
-        self.size = 'Big and fancy'
+        self.size = "Big and fancy"
 
 
 def construct_building(cls):
@@ -94,18 +91,24 @@ def construct_building(cls):
     return building
 
 
-# Client
-if __name__ == "__main__":
-    house = House()
-    print(house)
-    flat = Flat()
-    print(flat)
+def main():
+    """
+    >>> house = House()
+    >>> house
+    Floor: One | Size: Big
+
+    >>> flat = Flat()
+    >>> flat
+    Floor: More than One | Size: Small
 
     # Using an external constructor function:
-    complex_house = construct_building(ComplexHouse)
-    print(complex_house)
+    >>> complex_house = construct_building(ComplexHouse)
+    >>> complex_house
+    Floor: One | Size: Big and fancy
+    """
 
-### OUTPUT ###
-# Floor: One | Size: Big
-# Floor: More than One | Size: Small
-# Floor: One | Size: Big and fancy
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()

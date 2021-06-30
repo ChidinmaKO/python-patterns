@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 *What is this pattern about?
 This pattern is used when creating an object is costly (and they are
@@ -17,7 +15,7 @@ populated with strings.
 As we can see, the first string object put in "yam" is USED by the
 with statement. But because it is released back into the pool
 afterwards it is reused by the explicit call to sample_queue.get().
-Same thing happens with "sam", when the ObjectPool created insided the
+Same thing happens with "sam", when the ObjectPool created inside the
 function is deleted (by the GC) and the object is returned.
 
 *Where is the pattern used practically?
@@ -53,32 +51,36 @@ class ObjectPool:
 
 
 def main():
-    import queue
+    """
+    >>> import queue
 
-    def test_object(queue):
-        pool = ObjectPool(queue, True)
-        print('Inside func: {}'.format(pool.item))
+    >>> def test_object(queue):
+    ...    pool = ObjectPool(queue, True)
+    ...    print('Inside func: {}'.format(pool.item))
 
-    sample_queue = queue.Queue()
+    >>> sample_queue = queue.Queue()
 
-    sample_queue.put('yam')
-    with ObjectPool(sample_queue) as obj:
-        print('Inside with: {}'.format(obj))
-    print('Outside with: {}'.format(sample_queue.get()))
+    >>> sample_queue.put('yam')
+    >>> with ObjectPool(sample_queue) as obj:
+    ...    print('Inside with: {}'.format(obj))
+    Inside with: yam
 
-    sample_queue.put('sam')
-    test_object(sample_queue)
-    print('Outside func: {}'.format(sample_queue.get()))
+    >>> print('Outside with: {}'.format(sample_queue.get()))
+    Outside with: yam
+
+    >>> sample_queue.put('sam')
+    >>> test_object(sample_queue)
+    Inside func: sam
+
+    >>> print('Outside func: {}'.format(sample_queue.get()))
+    Outside func: sam
 
     if not sample_queue.empty():
         print(sample_queue.get())
+    """
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    import doctest
 
-### OUTPUT ###
-# Inside with: yam
-# Outside with: yam
-# Inside func: sam
-# Outside func: sam
+    doctest.testmod()

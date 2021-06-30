@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import unittest
-from patterns.structural.adapter import Dog, Cat, Human, Car, Adapter
+
+from patterns.structural.adapter import Adapter, Car, Cat, Dog, Human
 
 
 class ClassTest(unittest.TestCase):

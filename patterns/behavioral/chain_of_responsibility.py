@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 *What is this pattern about?
 
@@ -20,15 +18,17 @@ in several directions, forming a `tree of responsibility`.
 Allow a request to pass down a chain of receivers until it is handled.
 """
 
-import abc
+from abc import ABC, abstractmethod
+from typing import Optional, Tuple, TypeVar
+
+T = TypeVar("T")
 
 
-class Handler(metaclass=abc.ABCMeta):
-
-    def __init__(self, successor=None):
+class Handler(ABC):
+    def __init__(self, successor: Optional[T] = None):
         self.successor = successor
 
-    def handle(self, request):
+    def handle(self, request: int) -> None:
         """
         Handle request and stop.
         If can't - call next handler in chain.
@@ -40,8 +40,8 @@ class Handler(metaclass=abc.ABCMeta):
         if not res and self.successor:
             self.successor.handle(request)
 
-    @abc.abstractmethod
-    def check_range(self, request):
+    @abstractmethod
+    def check_range(self, request: int) -> Optional[bool]:
         """Compare passed value to predefined interval"""
 
 
@@ -51,9 +51,9 @@ class ConcreteHandler0(Handler):
     """
 
     @staticmethod
-    def check_range(request):
+    def check_range(request: int) -> Optional[bool]:
         if 0 <= request < 10:
-            print("request {} handled in handler 0".format(request))
+            print(f"request {request} handled in handler 0")
             return True
 
 
@@ -62,30 +62,30 @@ class ConcreteHandler1(Handler):
 
     start, end = 10, 20
 
-    def check_range(self, request):
+    def check_range(self, request: int) -> Optional[bool]:
         if self.start <= request < self.end:
-            print("request {} handled in handler 1".format(request))
+            print(f"request {request} handled in handler 1")
             return True
 
 
 class ConcreteHandler2(Handler):
     """... With helper methods."""
 
-    def check_range(self, request):
+    def check_range(self, request: int) -> Optional[bool]:
         start, end = self.get_interval_from_db()
         if start <= request < end:
-            print("request {} handled in handler 2".format(request))
+            print(f"request {request} handled in handler 2")
             return True
 
     @staticmethod
-    def get_interval_from_db():
+    def get_interval_from_db() -> Tuple[int, int]:
         return (20, 30)
 
 
 class FallbackHandler(Handler):
     @staticmethod
-    def check_range(request):
-        print("end of chain, no handler for {}".format(request))
+    def check_range(request: int) -> Optional[bool]:
+        print(f"end of chain, no handler for {request}")
         return False
 
 
@@ -114,4 +114,5 @@ def main():
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(optionflags=doctest.ELLIPSIS)

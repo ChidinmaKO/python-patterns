@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 @author: Gordeev Andrey <gordeev.and.and@gmail.com>
 
@@ -10,12 +8,12 @@ Provides a centralized entry point that controls and manages request handling.
 
 class MobileView:
     def show_index_page(self):
-        print('Displaying mobile index page')
+        print("Displaying mobile index page")
 
 
 class TabletView:
     def show_index_page(self):
-        print('Displaying tablet index page')
+        print("Displaying tablet index page")
 
 
 class Dispatcher:
@@ -29,11 +27,11 @@ class Dispatcher:
         elif request.type == Request.tablet_type:
             self.tablet_view.show_index_page()
         else:
-            print('cant dispatch the request')
+            print("Cannot dispatch the request")
 
 
 class RequestController:
-    """ front controller """
+    """front controller"""
 
     def __init__(self):
         self.dispatcher = Dispatcher()
@@ -42,14 +40,14 @@ class RequestController:
         if isinstance(request, Request):
             self.dispatcher.dispatch(request)
         else:
-            print('request must be a Request object')
+            print("request must be a Request object")
 
 
 class Request:
-    """ request """
+    """request"""
 
-    mobile_type = 'mobile'
-    tablet_type = 'tablet'
+    mobile_type = "mobile"
+    tablet_type = "tablet"
 
     def __init__(self, request):
         self.type = None
@@ -60,17 +58,25 @@ class Request:
             self.type = self.tablet_type
 
 
-if __name__ == '__main__':
-    front_controller = RequestController()
-    front_controller.dispatch_request(Request('mobile'))
-    front_controller.dispatch_request(Request('tablet'))
+def main():
+    """
+    >>> front_controller = RequestController()
 
-    front_controller.dispatch_request(Request('desktop'))
-    front_controller.dispatch_request('mobile')
+    >>> front_controller.dispatch_request(Request('mobile'))
+    Displaying mobile index page
+
+    >>> front_controller.dispatch_request(Request('tablet'))
+    Displaying tablet index page
+
+    >>> front_controller.dispatch_request(Request('desktop'))
+    Cannot dispatch the request
+
+    >>> front_controller.dispatch_request('mobile')
+    request must be a Request object
+    """
 
 
-### OUTPUT ###
-# Displaying mobile index page
-# Displaying tablet index page
-# cant dispatch the request
-# request must be a Request object
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod()

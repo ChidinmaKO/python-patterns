@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 *What is this pattern about?
 This pattern aims to minimise the number of objects that are needed by
@@ -55,7 +53,7 @@ class Card:
     #     self.value, self.suit = value, suit
 
     def __repr__(self):
-        return "<Card: {}{}>".format(self.value, self.suit)
+        return f"<Card: {self.value}{self.suit}>"
 
 
 def main():
@@ -83,4 +81,5 @@ def main():
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

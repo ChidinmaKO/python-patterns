@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Reference:
 http://www.slideshare.net/ishraqabd/publish-subscribe-model-overview-13368808
@@ -48,45 +46,48 @@ class Subscriber:
         self.provider.unsubscribe(msg, self)
 
     def run(self, msg):
-        print("{} got {}".format(self.name, msg))
+        print(f"{self.name} got {msg}")
 
 
 def main():
-    message_center = Provider()
+    """
+    >>> message_center = Provider()
 
-    fftv = Publisher(message_center)
+    >>> fftv = Publisher(message_center)
 
-    jim = Subscriber("jim", message_center)
-    jim.subscribe("cartoon")
-    jack = Subscriber("jack", message_center)
-    jack.subscribe("music")
-    gee = Subscriber("gee", message_center)
-    gee.subscribe("movie")
-    vani = Subscriber("vani", message_center)
-    vani.subscribe("movie")
-    vani.unsubscribe("movie")
+    >>> jim = Subscriber("jim", message_center)
+    >>> jim.subscribe("cartoon")
+    >>> jack = Subscriber("jack", message_center)
+    >>> jack.subscribe("music")
+    >>> gee = Subscriber("gee", message_center)
+    >>> gee.subscribe("movie")
+    >>> vani = Subscriber("vani", message_center)
+    >>> vani.subscribe("movie")
+    >>> vani.unsubscribe("movie")
 
-    fftv.publish("cartoon")
-    fftv.publish("music")
-    fftv.publish("ads")
-    fftv.publish("movie")
-    fftv.publish("cartoon")
-    fftv.publish("cartoon")
-    fftv.publish("movie")
-    fftv.publish("blank")
+    # Note that no one subscribed to `ads`
+    # and that vani changed their mind
 
-    message_center.update()
+    >>> fftv.publish("cartoon")
+    >>> fftv.publish("music")
+    >>> fftv.publish("ads")
+    >>> fftv.publish("movie")
+    >>> fftv.publish("cartoon")
+    >>> fftv.publish("cartoon")
+    >>> fftv.publish("movie")
+    >>> fftv.publish("blank")
+
+    >>> message_center.update()
+    jim got cartoon
+    jack got music
+    gee got movie
+    jim got cartoon
+    jim got cartoon
+    gee got movie
+    """
 
 
 if __name__ == "__main__":
-    main()
+    import doctest
 
-
-OUTPUT = """
-jim got cartoon
-jack got music
-gee got movie
-jim got cartoon
-jim got cartoon
-gee got movie
-"""
+    doctest.testmod()
